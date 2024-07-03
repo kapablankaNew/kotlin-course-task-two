@@ -1,16 +1,14 @@
 package org.kapablankanew.kotlin.course.tasks.two
 
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 class SmartDeferred<T> (
     private val deferred: Deferred<T>,
     private val dependencies: List<Deferred<*>>
 ) {
-    suspend fun await(startLazy: Boolean = false, coroutineContext: CoroutineContext = EmptyCoroutineContext): T {
+    suspend fun await(startLazy: Boolean = false): T {
         if (!startLazy) {
-            CoroutineScope(coroutineContext).launch {
+            coroutineScope {
                 dependencies.forEach {
                     it.start()
                 }
